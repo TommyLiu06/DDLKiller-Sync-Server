@@ -2,6 +2,7 @@
     "type": "modification",
     "content": {
         "operation": "complete",
-        "target_id": 12345
+        "target_id": 12345,
+        "last_modified": "20240615093000123"
     }
 }

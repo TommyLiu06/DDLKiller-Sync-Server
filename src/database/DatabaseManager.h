@@ -5,8 +5,8 @@
 #include <vector>
 
 struct TodoItem {
-    unsigned int uuid;
-    unsigned int lastModified;
+    std::string uuid;
+    std::string lastModified;
     std::string title;
     std::string description;
     std::string dueDate;
@@ -31,7 +31,7 @@ public:
     //     const int& completeFlag = 0
     // );
 
-    // std::vector<Modification> getModificationsAfterId(const int& lastProcessedId);
+    std::vector<TodoItem> getTodoItems();
 
 private:
     SQLite::Database db;
