@@ -5,6 +5,9 @@
 ### 1. Install Requirements
 
 ```bash
+# 0. Update system
+sudo apt update && sudo apt upgrade
+
 # 1. Development tools
 sudo apt install build-essential cmake
 
@@ -16,6 +19,9 @@ sudo apt install sqlite3 libsqlite3-dev
 
 # 4. SQLiteCpp
 sudo apt install libsqlitecpp-dev
+
+# 5. nlohmann-json
+sudo apt install nlohmann-json3-dev
 ```
 
 ### 2. Build
