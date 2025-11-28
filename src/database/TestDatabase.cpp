@@ -39,4 +39,21 @@ int main() {
                     << "------------------------\n";
     }
 
+    // Delete a TodoItem
+    dbManager.deleteTodoItem(item1.uuid);
+
+    // Verify deletion
+    todoItems = dbManager.getTodoItems();
+    std::cout << "After deletion:\n";
+    for (const auto& item : todoItems) {
+        std::cout << "-------------------------\n"
+                    << "UUID: " << item.uuid << "\n"
+                    << "Last Modified: " << item.lastModified << "\n"
+                    << "Title: " << item.title << "\n"
+                    << "Description: " << item.description << "\n"
+                    << "Due Date: " << item.dueDate << "\n"
+                    << "Complete Flag: " << item.completeFlag << "\n"
+                    << "------------------------\n";
+    }
+
 }
