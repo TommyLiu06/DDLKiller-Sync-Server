@@ -1,5 +1,6 @@
 #include "WebSocketServer.h"
 #include "WebSocketSession.h"
+#include "../json/JsonSender.h"
 
 WebSocketServer::WebSocketServer(boost::asio::io_context& ioc, unsigned short port, const char* dbPath)
     : acceptor_(ioc, tcp::endpoint(tcp::v4(), port)),
@@ -41,12 +42,23 @@ void WebSocketServer::broadcast(const std::string& msg, const std::shared_ptr<We
     std::lock_guard<std::mutex> lock(clients_mutex_);
 
     for (auto& client : clients_) {
-        if (client && client != exclude) {
-            try {
-                client->send(msg);
-            } catch (...) {
-                // 某个客户端断开？忽略
+        if (client) {
+            if (client == exclude) {
+                std::string successMsg = JsonSender::createSuccessMessage();
+                try {
+                    client->send(successMsg);  // 发送成功响应
+                } catch (...) {
+                    // 忽略客户端断开
+                }
+
+            } else {
+                try {
+                    client->send(msg);
+                } catch (...) {
+                    // 忽略某个客户端断开
+                }
             }
+            
         }
     }
 }

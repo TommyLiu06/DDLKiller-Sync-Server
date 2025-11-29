@@ -5,4 +5,5 @@
 class JsonSender {
 public:
     static std::string createFullUpdateMessage(const std::vector<TodoItem>& items);
+    static std::string createSuccessMessage();
 };

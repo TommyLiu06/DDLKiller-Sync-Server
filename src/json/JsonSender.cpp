@@ -18,3 +18,10 @@ std::string JsonSender::createFullUpdateMessage(const std::vector<TodoItem>& ite
 
     return jsonObj.dump();
 }
+
+std::string JsonSender::createSuccessMessage() {
+    nlohmann::json jsonObj;
+    jsonObj["type"] = "response";
+    jsonObj["content"] = { {"status", "success"} };
+    return jsonObj.dump();
+}

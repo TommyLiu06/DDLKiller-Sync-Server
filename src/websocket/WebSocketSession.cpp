@@ -84,7 +84,7 @@ void WebSocketSession::on_read(beast::error_code ec, std::size_t, beast::flat_bu
         // 对于全量更新消息，广播修改后的的完整列表
         std::vector<TodoItem> updatedItems = server_->dbManager.getTodoItems();
         std::string fullUpdateMsg = JsonSender::createFullUpdateMessage(updatedItems);
-        server_->broadcast(fullUpdateMsg);
+        server_->broadcast(fullUpdateMsg, shared_from_this());
     }
 
     // 继续读下一条消息
