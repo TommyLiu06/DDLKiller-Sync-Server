@@ -7,11 +7,7 @@
 ```bash
 sudo apt update && sudo apt upgrade
 
-sudo apt install build-essential cmake \  # Build tools
-                    libboost-all-dev \  # Boost libraries
-                    sqlite3 libsqlite3-dev \  # SQLite3
-                    libsqlitecpp-dev \  # SQLiteCpp
-                    nlohmann-json3-dev  # nlohmann-json
+sudo apt install build-essential cmake libboost-all-dev sqlite3 libsqlite3-dev libsqlitecpp-dev nlohmann-json3-dev
 ```
 
 ### 2. Build
