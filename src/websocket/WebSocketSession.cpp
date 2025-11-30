@@ -91,6 +91,9 @@ void WebSocketSession::on_read(beast::error_code ec, std::size_t, beast::flat_bu
         std::string fullUpdateMsg = JsonSender::createFullUpdateMessage(updatedItems);
         server_->broadcast(fullUpdateMsg, shared_from_this());
 
+    } else if (msgType == "parse_error") {
+        std::cerr << "Failed to parse incoming message as JSON." << std::endl;
+
     } else {
         // 其他类型的消息，暂不处理
         std::cerr << "Unknown message type: " << msgType << std::endl;

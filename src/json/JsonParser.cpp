@@ -35,8 +35,13 @@ ModifyOperation JsonParser::parseModifyOperation(const std::string& jsonStr) {
 }
 
 std::string JsonParser::getMessageType(const std::string& jsonStr) {
-    auto jsonObj = nlohmann::json::parse(jsonStr);
-    return jsonObj["type"].get<std::string>();
+    try {
+        auto jsonObj = nlohmann::json::parse(jsonStr);
+        return jsonObj["type"].get<std::string>();
+    }
+    catch (...) {
+        return "parse_error";
+    }
 }
 
 std::vector<TodoItem> JsonParser::parseTodoItems(const std::string& jsonStr) {
