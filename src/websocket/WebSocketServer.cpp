@@ -62,3 +62,8 @@ void WebSocketServer::broadcast(const std::string& msg, const std::shared_ptr<We
         }
     }
 }
+
+void WebSocketServer::callBack(const std::string& msg, const std::shared_ptr<WebSocketSession>& source)
+{
+    source->send(msg);
+}

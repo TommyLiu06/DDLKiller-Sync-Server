@@ -82,17 +82,24 @@ void WebSocketSession::on_read(beast::error_code ec, std::size_t, beast::flat_bu
         // 对于修改消息，直接广播
         server_->broadcast(msg, shared_from_this());
 
+    } else if (msgType == "full_update_request") {
+        // 获取当前服务器列表并发送给请求更新的客户端
+        std::vector<TodoItem> items = server_->dbManager.getTodoItems();
+        std::string fullUpdateMsg = JsonSender::createFullUpdateMessage(items);
+        server_->callBack(fullUpdateMsg, shared_from_this());
+
     } else if (msgType == "full_update") {
+        // 先用客户端发送的列表更新服务器数据库
         std::vector<TodoItem> items = JsonParser::parseTodoItems(msg);
         server_->dbManager.updateTodoItems(items);
 
-        // 对于全量更新消息，广播修改后的的完整列表
+        // 对除消息源以外的所有客户端广播修改后的的完整列表
         std::vector<TodoItem> updatedItems = server_->dbManager.getTodoItems();
-        std::string fullUpdateMsg = JsonSender::createFullUpdateMessage(updatedItems);
+        std::string fullUpdateMsg = JsonSender::createFullUpdateMessage(updatedItems, true);
         server_->broadcast(fullUpdateMsg, shared_from_this());
 
     } else if (msgType == "parse_error") {
-        std::cerr << "Failed to parse incoming message as JSON." << std::endl;
+        std::cerr << "Failed to parse incoming message." << std::endl;
 
     } else {
         // 其他类型的消息，暂不处理
