@@ -21,7 +21,7 @@ cmake ..
 make -j$(nproc)
 ```
 
-NOTICE: If you are building on devices with low memory (<=2GB), consider using `make -j1` to avoid out-of-memory errors.
+NOTICE: If you are building on devices with low memory (<=2GB), consider using `make -j1` or using swap to avoid out-of-memory errors.
 
 ### 3. Run Server
 
