@@ -10,7 +10,7 @@ sudo apt update && sudo apt upgrade
 sudo apt install build-essential cmake libboost-all-dev sqlite3 libsqlite3-dev libsqlitecpp-dev nlohmann-json3-dev
 ```
 
-If some packages are not found, you may need to install the from source.
+If some packages are not found, you may need to install them from source.
 
 ### 2. Build
 
