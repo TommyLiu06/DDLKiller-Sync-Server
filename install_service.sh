@@ -95,10 +95,11 @@ Environment="DDL_SYNC_PORT=${PORT}"
 Environment="DDL_SYNC_DB=${DB_PATH}"
 ExecStart=${DEST_DIR}/ddl_sync_server \${DDL_SYNC_PORT} \${DDL_SYNC_DB}
 Restart=always
+RestartSec=5s
 WorkingDirectory=${DEST_DIR}
 User=root
-StandardOutput=syslog
-StandardError=syslog
+StandardOutput=journal
+StandardError=journal
 SyslogIdentifier=ddl_sync_server
 
 [Install]
