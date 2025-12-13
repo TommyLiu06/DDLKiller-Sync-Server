@@ -5,23 +5,29 @@
 #include "../database/DatabaseManager.h"
 
 struct AddOperation {
-    std::string uuid;
-    std::string title;
-    std::string description;
-    std::string dueDate;
+    std::string uuid = "";
+    std::string title = "";
+    std::string description = "";
+    std::string dueDate = "";
+
+    bool operator==(const AddOperation&) const = default;
 };
 
 struct DeleteOperation {
-    std::string targetUuid;
+    std::string targetUuid = "";
+
+    bool operator==(const AddOperation&) const = default;
 };
 
 struct ModifyOperation {
-    std::string targetUuid;
-    std::string lastModified;
-    std::string title;
-    std::string description;
-    std::string dueDate;
-    int completeFlag;
+    std::string targetUuid = "";
+    std::string lastModified = "";
+    std::string title = "";
+    std::string description = "";
+    std::string dueDate ="";
+    int completeFlag = -1;
+
+    bool operator==(const AddOperation&) const = default;
 };
 
 class JsonParser

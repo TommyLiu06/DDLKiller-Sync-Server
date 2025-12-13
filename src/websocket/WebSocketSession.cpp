@@ -52,33 +52,53 @@ void WebSocketSession::on_read(beast::error_code ec, std::size_t, beast::flat_bu
         if (modType == "add") {
             AddOperation op = JsonParser::parseAddOperation(msg);
 
-            TodoItem item;
-            item.uuid = op.uuid;
-            item.lastModified = op.uuid; // 使用 uuid 作为创建时间戳
-            item.title = op.title;
-            item.description = op.description;
-            item.dueDate = op.dueDate;
-            item.completeFlag = 0;
-            server_->broadcast(msg, shared_from_this(), modType, op.uuid);
-            server_->dbManager.addTodoItem(item);
+            if (op == AddOperation{}) {  // 与默认构造相同说明解析失败
+                std::cerr << "Failed to parse add operation.\n";
+
+            } else {
+                TodoItem item;
+                item.uuid = op.uuid;
+                item.lastModified = op.uuid;  // 使用 uuid 作为创建时间戳
+                item.title = op.title;
+                item.description = op.description;
+                item.dueDate = op.dueDate;
+                item.completeFlag = 0;
+                server_->broadcast(msg, shared_from_this(), modType, op.uuid);
+                server_->dbManager.addTodoItem(item);
+            }
 
         } else if (modType == "delete") {
             DeleteOperation op = JsonParser::parseDeleteOperation(msg);
-            server_->broadcast(msg, shared_from_this(), modType, op.targetUuid);
-            server_->dbManager.deleteTodoItem(op.targetUuid);
-            
+
+            if (op == DeleteOperation{}) {  // 与默认构造相同说明解析失败
+                std::cerr << "Failed to parse delete operation.\n";
+
+            } else {
+                server_->broadcast(msg, shared_from_this(), modType, op.targetUuid);
+                server_->dbManager.deleteTodoItem(op.targetUuid);
+            }
+
         } else if (modType == "modify") {
             ModifyOperation op = JsonParser::parseModifyOperation(msg);
-            TodoItem item;
-            item.uuid = op.targetUuid;
-            item.lastModified = op.lastModified;
-            item.title = op.title;
-            item.description = op.description;
-            item.dueDate = op.dueDate;
-            item.completeFlag = op.completeFlag;
-            server_->dbManager.moidfyTodoItem(item);
-            // 对于修改消息，直接广播
-            server_->broadcast(msg, shared_from_this());
+
+            if (op == ModifyOperation{}) {  // 与默认构造相同说明解析失败
+                std::cerr << "Failed to parse modify operation.\n";
+
+            } else {
+                TodoItem item;
+                item.uuid = op.targetUuid;
+                item.lastModified = op.lastModified;
+                item.title = op.title;
+                item.description = op.description;
+                item.dueDate = op.dueDate;
+                item.completeFlag = op.completeFlag;
+                server_->dbManager.moidfyTodoItem(item);
+                // 对于修改消息，直接广播
+                server_->broadcast(msg, shared_from_this());
+            }
+
+        } else if (modType == "operation_error") {
+            std::cerr << "Failed to parse the operation of incoming message." << std::endl;
 
         } else {
             std::cerr << "Unknown modification type: " << modType << std::endl;
@@ -101,8 +121,8 @@ void WebSocketSession::on_read(beast::error_code ec, std::size_t, beast::flat_bu
         std::string fullUpdateMsg = JsonSender::createFullUpdateMessage(updatedItems, true);
         server_->broadcast(fullUpdateMsg, shared_from_this());
 
-    } else if (msgType == "parse_error") {
-        std::cerr << "Failed to parse incoming message." << std::endl;
+    } else if (msgType == "type_error") {
+        std::cerr << "Failed to parse the type of incoming message." << std::endl;
 
     } else {
         // 其他类型的消息，暂不处理

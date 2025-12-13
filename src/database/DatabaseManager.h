@@ -5,12 +5,14 @@
 #include <vector>
 
 struct TodoItem {
-    std::string uuid;          // 唯一表标识符，用创建时间表示
-    std::string lastModified;  // 最后修改的时间
-    std::string title;         // 待办事项标题
-    std::string description;   // 待办事项详细描述
-    std::string dueDate;       // 待办事项逾期时间
-    int completeFlag;          // 待办事项是否完成标识
+    std::string uuid = "";          // 唯一表标识符，用创建时间表示
+    std::string lastModified = "";  // 最后修改的时间
+    std::string title = "";         // 待办事项标题
+    std::string description = "";   // 待办事项详细描述
+    std::string dueDate = "";       // 待办事项逾期时间
+    int completeFlag = -1;          // 待办事项完成标识 (1 - 已完成 / 0 - 未完成 / -1 - 未初始化)
+
+    bool operator==(const AddOperation&) const = default;
 };
 
 class DatabaseManager
